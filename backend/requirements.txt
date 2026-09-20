@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pandas
+scikit-learn
+sentence-transformers
+torch
+pydantic-settings
+sqlalchemy
+bcrypt
+pyodbc
+"pydantic[email]"
