@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Briefcase, Award, ArrowRight } from 'lucide-react';
+import { Users, Briefcase, Award, ArrowRight, Smartphone } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  useEffect(() => {
+    // Automatically capture the current host URL (e.g., http://192.168.1.50:5173 or localhost:5173)
+    // If running locally, swap localhost with window.location.hostname so phones on the same Wi-Fi can scan it
+    const hostname = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? window.location.hostname // or user can type their local IP if needed, but window.location.href works if accessed via IP
+      : window.location.hostname;
+    
+    setCurrentUrl(window.location.href);
+  }, []);
 
   return (
     <div 
@@ -42,6 +54,24 @@ export default function LandingPage() {
           >
             Proceed to Recruitment Portal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
+        </div>
+
+        {/* Mobile App QR Code Quick Access Box */}
+        <div className="max-w-sm mx-auto mb-12 bg-white/5 backdrop-blur-md border border-white/15 p-5 rounded-2xl shadow-xl flex flex-col items-center">
+          <div className="flex items-center gap-2 text-indigo-300 text-sm font-semibold mb-3">
+            <Smartphone className="w-4 h-4" />
+            <span>Scan to Open App on Mobile Phone</span>
+          </div>
+          <div className="bg-white p-3 rounded-xl shadow-inner mb-3">
+            {currentUrl ? (
+              <QRCodeSVG value={currentUrl} size={130} />
+            ) : (
+              <div className="w-[130px] h-[130px] bg-slate-200 animate-pulse rounded-lg" />
+            )}
+          </div>
+          <p className="text-xs text-slate-400 text-center break-all px-2">
+            Make sure your phone is connected to the same Wi-Fi network as this computer.
+          </p>
         </div>
 
         {/* Impact Statistics Counter */}
